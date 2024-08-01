@@ -61,7 +61,7 @@ sub get_tags {
         my $series_tags;
         my $character_tags;
         my $ehtags;
-        my $ehtags_flag;
+        my $tags;
         my $result = Mojo::DOM->new->xml(1)->parse($stringxml)->at('Genre');
         if (defined $result) {
             $genre = $result->text;
@@ -113,18 +113,18 @@ sub get_tags {
         @found_tags = try_add_tags(\@found_tags, "character:", $character_tags);
         push( @found_tags, "language:" . $lang ) unless !$lang;
         if(defined $ehtags) {
-            my $tags = $ehtags;
+            $tags = $ehtags;
         }
         else{
-            my $tags = join( ", ", @found_tags );
+            $tags = join( ", ", @found_tags );
         }
-        
+
 
         $logger->info("Sending the following tags to LRR: $tags");
         return ( tags => $tags );
     }
-    
-    return ( error => "No ComicInfo.xml file found in archive");    
+
+    return ( error => "No ComicInfo.xml file found in archive");
 }
 
 sub try_add_tags {
